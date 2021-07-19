@@ -87,11 +87,15 @@ function getMostPopularBooks(books) {
   // note: popularity is measured by times a book has been borrowed
   const popularBooks = [];
 
+  // for each book create an object with book title and number of borrows(length of borrows array) then push to empty array 
   books.forEach((book) => {
     popularBooks.push(createObject(book.title, book.borrows.length));
   });
 
+  // sort the new array by amount of borrows
   popularBooks.sort((bookA, bookB) => (bookA.count > bookB.count ? -1 : 1));
+
+  // limit the array to have only 5 results
   deleteExtraObjects(popularBooks, 5);
 
   return popularBooks;
@@ -104,6 +108,7 @@ function getMostPopularAuthors(books, authors) {
   // note: popularity is measured by times an author's book has been borrowed
   const popularAuthors = [];
 
+  // for each book get get the author and number of borrows for the book
   books.forEach((book) => {
     let authorName = findAuthorById(authors, book.authorId).name;
     const numBorrows = book.borrows.length;
@@ -118,14 +123,18 @@ function getMostPopularAuthors(books, authors) {
       }
     });
 
+    // if author has not already been created as an object create it as an object and push it to the array
     if(!found) {
       popularAuthors.push(
         createObject(authorName.first + " " + authorName.last, numBorrows));
     }
   });
 
+  // sort the authors by the number of borrows 
   popularAuthors.sort((authorA, authorB) => 
     (authorA.count > authorB.count ? -1 : 1));
+
+  // limit the number of results in array to 5
   deleteExtraObjects(popularAuthors, 5);
 
   return popularAuthors;
